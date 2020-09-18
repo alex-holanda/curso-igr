@@ -1,0 +1,33 @@
+.AppInput {
+  height: 45px;
+
+  label {
+    display: flex;
+    flex-direction: column;
+
+    input {
+      border: none;
+      border-bottom: 1px solid #ccc;
+      border-radius: 0; /* fix edge default border-radius */
+      height: 30px;
+      color: #222;
+
+      &:focus {
+        border-color: #09f;
+        outline: none;
+      }
+
+      &::placeholder {
+        color: #ccc;
+      }
+    }
+  }
+
+  span {
+    text-transform: uppercase;
+    color: #09f;
+    font-size: 0.8em;
+    height: 15px;
+    letter-spacing: 0.75px;
+  }
+}
