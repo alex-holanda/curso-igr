@@ -6,11 +6,6 @@ button.AppButton {
   border: none;
   padding: 7px 10px;
 
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-
   &:hover {
     background-color: rgba(#09f, 0.8);
     cursor: pointer;

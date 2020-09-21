@@ -10,10 +10,10 @@ declare interface ButtonProps {
 const Button: React.FC<ButtonProps> = (props) => {
   return <button
     className="AppButton"
-    onClick={ props.onClick }
+    onClick={props.onClick}
   >
-    <p>{ props.children || 'Nameless Button' }</p>
-    { props.appendIcon }
+    <p>{props.children || 'Nameless Button'}</p>
+    {props.appendIcon}
   </button>
 }
 
