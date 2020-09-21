@@ -85,7 +85,7 @@ const ProductForm: React.FC<ProductFormProps> = (props) => {
   }
 
   return <Form
-    title="Product"
+    title="Product form"
     onSubmit={handleFormSubmit}
   >
     <Input
@@ -121,7 +121,9 @@ const ProductForm: React.FC<ProductFormProps> = (props) => {
     />
 
     <Button>
-      Submit
+      {
+        form.id ? 'Update' : 'Submit'
+      }
     </Button>
   </Form>
 }
