@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Form from '../../shared/Form';
 import Input from '../../shared/Input';
@@ -25,7 +25,7 @@ declare interface ProductFormProps {
 }
 
 const ProductForm: React.FC<ProductFormProps> = (props) => {
-  const initialState: InitialFormState = props.form
+  const initialFormState: InitialFormState = props.form
     ? {
       id: props.form.id,
       name: props.form.name,
@@ -38,7 +38,11 @@ const ProductForm: React.FC<ProductFormProps> = (props) => {
       stock: ''
     }
 
-  const [form, setForm] = useState(initialState);
+  const [form, setForm] = useState(initialFormState);
+
+  useEffect(() => {
+    setForm(initialFormState);
+  }, [props.form]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = event.target;
@@ -77,7 +81,7 @@ const ProductForm: React.FC<ProductFormProps> = (props) => {
       ? updateProduct(form)
       : createProduct(form);
     
-    setForm(initialState);
+    setForm(initialFormState);
   }
 
   return <Form
