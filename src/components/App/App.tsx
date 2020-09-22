@@ -36,7 +36,7 @@ function App() {
     setProducts([
       ...products,
       {
-        id: products.length + 1,
+        _id: String(products.length + 1),
         ...product
       }
     ])
@@ -44,7 +44,7 @@ function App() {
 
   const handleProductUpdate = (newProduct: Product) => {
     setProducts(products.map(product =>
-      product.id === newProduct.id
+      product._id === newProduct._id
         ? newProduct
         : product
     ));
@@ -64,8 +64,8 @@ function App() {
     );
   }
 
-  const deleteProduct = (id: number) => {
-    setProducts(products.filter(product => product.id !== id ))
+  const deleteProduct = (id: string) => {
+    setProducts(products.filter(product => product._id !== id ))
   }
 
   const handleProductDelete = (product: Product) => {
@@ -79,7 +79,7 @@ function App() {
       confirmButtonText: `Yes, delete ${product.name}!`
     }).then((result) => {
       if (result.value) {
-        deleteProduct(product.id);
+        deleteProduct(product._id);
 
         Swal.fire(
           'Deleted!',
