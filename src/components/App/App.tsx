@@ -25,7 +25,7 @@ const headers: TableHeader[] = [
 
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
-  const [updatingProduct, setUpdatingProduct] = useState<Product | undefined>(products[0]);
+  const [updatingProduct, setUpdatingProduct] = useState<Product | undefined>();
 
   async function fetchData() {
     const _products = await getAllProducts();

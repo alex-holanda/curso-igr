@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import './ProductForm.scss';
 
 import Form from '../../shared/Form';
 import Input from '../../shared/Input';
@@ -84,6 +85,11 @@ const ProductForm: React.FC<ProductFormProps> = (props) => {
     setForm(initialFormState);
   }
 
+  const handleFormReset = () => {
+    console.log('Reset');
+    setForm(initialFormState);
+  }
+
   return <Form
     title="Product form"
     onSubmit={handleFormSubmit}
@@ -120,11 +126,16 @@ const ProductForm: React.FC<ProductFormProps> = (props) => {
       required
     />
 
-    <Button>
-      {
-        form._id ? 'Update' : 'Submit'
-      }
-    </Button>
+    <div className="footer">
+      <Button>
+        {
+          form._id ? 'Update' : 'Submit'
+        }
+      </Button>
+
+      <button className="buttonReset" onClick={handleFormReset}>Reset</button>
+    </div>
+    
   </Form>
 }
 
