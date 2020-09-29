@@ -1,13 +1,12 @@
+import { Action } from './../index';
 import { Product } from './../../shared/Table/Table.mockdata';
 import Products from "../../shared/Table/Table.mockdata";
 
-export interface Action<T = any> {
-  type: string;
-  payload?: T
-}
-
 export default function(state = Products, action: Action): Product[] {
   switch(action.type) {
+    case 'FETCH_PRODUCTS':
+      return [...action.payload];
+      
     case 'INSERT_NEW_PRODUCT':
       return [...state, {
         ...action.payload,
