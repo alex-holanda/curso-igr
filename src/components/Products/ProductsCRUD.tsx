@@ -30,7 +30,7 @@ const ProductsCRUD: React.FC<ProductsCRUDProps> = (props) => {
   useEffect(() => {
     dispatch(ProductsAction.getProducts())
       .catch(showErrorAlert);
-  }, []);
+  }, [props]);
 
   const handleProductSubmit = async (product: ProductCreator) => {
     dispatch(ProductsAction.insertNewProduct(product))
@@ -39,7 +39,7 @@ const ProductsCRUD: React.FC<ProductsCRUDProps> = (props) => {
   }
 
   const handleProductUpdate = async (newProduct: Product) => {
-    dispatch(ProductsAction.updateProduct(newProduct))
+    await dispatch(ProductsAction.updateProduct(newProduct))
       .then(() => setUpdatingProduct(undefined))
       .catch(showErrorAlert);
   }
@@ -53,23 +53,27 @@ const ProductsCRUD: React.FC<ProductsCRUDProps> = (props) => {
   }
 
   const deleteProduct = async (id: string) => {
+    console.log(id);
     dispatch(ProductsAction.deleteProduct(id))
       .then(() => {
+        setUpdatingProduct(undefined);
         Swal.fire('Uhul!', 'Product successfully deleted', 'success');
       })
       .catch(showErrorAlert);
   }
 
   const handleProductDelete = (product: Product) => {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#09f',
-      cancelButtonColor: '#d33',
-      confirmButtonText: `Yes, delete ${product.name}!`
-    }).then(({ value }) => value && deleteProduct(product._id));
+    Swal
+      .fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#09f',
+        cancelButtonColor: '#d33',
+        confirmButtonText: `Yes, delete ${product.name}!`
+      })
+      .then(({ value }) => value && deleteProduct(product._id));
   }
 
   return (
@@ -77,7 +81,7 @@ const ProductsCRUD: React.FC<ProductsCRUDProps> = (props) => {
       <Table
         headers={headers}
         data={props.products}
-        enableActions={true}
+        enableActions
         onDelete={handleProductDelete}
         onDetail={handleProductDetail}
         onEdit={setUpdatingProduct}

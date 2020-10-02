@@ -11,11 +11,11 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <switch>
+        <Switch>
           <Route path='/' exact component={HomeView} />
 
           <Route component={NotFoundView}/>
-        </switch>
+        </Switch>
       </BrowserRouter>
     </div>
   );

@@ -1,6 +1,11 @@
+import { Thunk } from '..';
 import { Product } from './../../shared/Table/Table.mockdata';
-import { Action, Thunk } from './../index';
-import { getAllProducts, updateSingleProduct, createSingleProduct, deleteSingleProduct } from './../../services/Products.service';
+import { 
+  getAllProducts, 
+  updateSingleProduct, 
+  createSingleProduct, 
+  deleteSingleProduct 
+} from './../../services/Products.service';
 import { ProductCreator } from './../../components/Products/ProductForm';
 
 export const updateProduct = (newProduct: Product): Thunk => async (dispatch) => {

@@ -1,6 +1,5 @@
-import { Action } from './../index';
-import { Product } from './../../shared/Table/Table.mockdata';
-import Products from "../../shared/Table/Table.mockdata";
+import Products, {Product} from "../../shared/Table/Table.mockdata";
+import { Action } from '..';
 
 export default function(state = Products, action: Action): Product[] {
   switch(action.type) {
