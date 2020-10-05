@@ -30,6 +30,8 @@ const ProductsCRUD: React.FC<ProductsCRUDProps> = (props) => {
   useEffect(() => {
     dispatch(ProductsAction.getProducts())
       .catch(showErrorAlert);
+
+      //eslint-disable-next-line
   }, []);
 
   const handleProductSubmit = async (product: ProductCreator) => {
