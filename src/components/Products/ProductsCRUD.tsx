@@ -30,7 +30,7 @@ const ProductsCRUD: React.FC<ProductsCRUDProps> = (props) => {
   useEffect(() => {
     dispatch(ProductsAction.getProducts())
       .catch(showErrorAlert);
-  }, [props]);
+  }, []);
 
   const handleProductSubmit = async (product: ProductCreator) => {
     dispatch(ProductsAction.insertNewProduct(product))

@@ -12,7 +12,7 @@ declare interface HeaderProps {
 const Header: React.FC<HeaderProps> = (props) => {
   return <header className="AppHeader">
     <h1>{ props.title }</h1>
-    <span>{ props.firtsProduct.name }</span>
+    <span>{ props.firtsProduct?.name }</span>
   </header>
 }
 
