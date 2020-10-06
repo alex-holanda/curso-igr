@@ -1,6 +1,6 @@
 import React from 'react';
-import Form from '../shared/Form';
-import Input from '../shared/Input';
+import Form from '../../shared/Form';
+import Input from '../../shared/Input';
 
 export interface User {
   name: string;
