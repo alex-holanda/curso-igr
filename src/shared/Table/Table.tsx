@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { RootState } from '../../redux';
 import { User } from '../../services/Authentication.service';
 import { profile } from 'console';
+import { NavLink } from 'react-router-dom';
 
 export interface TableHeader {
   key: string;
@@ -29,87 +30,110 @@ declare interface TableProps {
 
 const Table: React.FC<TableProps> = (props) => {
   const [organizedData, indexedHeaders] = organizeData(props.data, props.headers);
+  const page = 2;
 
   const isLoggedIn = !!props.profile?._id;
 
-  return <table className="AppTable">
-    <thead>
-      <tr>
-        {
-          props.headers.map(header =>
-            <th
-              className={header.right ? 'right' : ''}
-              key={header.key}>
-              {header.value}
-            </th>
-          )
-        }
-        {
-          props.enableActions
-          && <th className="right">
-            Actions
-            </th>
-        }
-      </tr>
-    </thead>
-
-    <tbody>
-      {
-        organizedData.map((row, i) => {
-          return <tr key={i}>
+  return (
+    <>
+      <table className="AppTable">
+        <thead>
+          <tr>
             {
-              Object
-                .keys(row)
-                .map((item, i) =>
-                  item !== '$original'
-                    ? <td
-                      key={row.$original._id + i}
-                      className={indexedHeaders[item].right ? 'right' : ''}
-                    >
-                      {row[item]}
-                    </td>
-                    : null
-                )
+              props.headers.map(header =>
+                <th
+                  className={header.right ? 'right' : ''}
+                  key={header.key}>
+                  {header.value}
+                </th>
+              )
             }
-
             {
-              props.enableActions &&
-              <td className="actions right">
-                {
-                  isLoggedIn
-                    ? props.onEdit &&
-                    <Button
-                      onClick={() => props.onEdit && props.onEdit(row.$original)}
-                    >
-                      Edit
-                    </Button>
-                    : null
-                }
-                {
-                  props.onDetail &&
-                  <Button
-                    onClick={() => props.onDetail && props.onDetail(row.$original)}
-                  >
-                    Detail
-                  </Button>
-                }
-                {
-                  isLoggedIn
-                    ? props.onDelete &&
-                    <Button
-                      onClick={() => props.onDelete && props.onDelete(row.$original)}
-                    >
-                      Delete
-                  </Button>
-                    : null
-                }
-              </td>
+              props.enableActions
+              && <th className="right">
+                Actions
+            </th>
             }
           </tr>
-        })
-      }
-    </tbody>
-  </table>
+        </thead>
+
+        <tbody>
+          {
+            organizedData.map((row, i) => {
+              return <tr key={i}>
+                {
+                  Object
+                    .keys(row)
+                    .map((item, i) =>
+                      item !== '$original'
+                        ? <td
+                          key={row.$original._id + i}
+                          className={indexedHeaders[item].right ? 'right' : ''}
+                        >
+                          {row[item]}
+                        </td>
+                        : null
+                    )
+                }
+
+                {
+                  props.enableActions &&
+                  <td className="actions right">
+                    {
+                      isLoggedIn
+                        ? props.onEdit &&
+                        <Button
+                          onClick={() => props.onEdit && props.onEdit(row.$original)}
+                        >
+                          Edit
+                    </Button>
+                        : null
+                    }
+                    {
+                      props.onDetail &&
+                      <Button
+                        onClick={() => props.onDetail && props.onDetail(row.$original)}
+                      >
+                        Detail
+                  </Button>
+                    }
+                    {
+                      isLoggedIn
+                        ? props.onDelete &&
+                        <Button
+                          onClick={() => props.onDelete && props.onDelete(row.$original)}
+                        >
+                          Delete
+                  </Button>
+                        : null
+                    }
+                  </td>
+                }
+              </tr>
+            })
+          }
+        </tbody>
+      </table>
+      <div className="Table__pagination">
+        {
+          Array(10)
+            .fill('')
+            .map((_, i) => {
+              return (
+                <NavLink 
+                  activeClassName="selected"
+                  to={`/products?page=${i + 1}`}
+                  isActive={() => page === i + 1}
+                >
+                  { i + 1 }
+                </NavLink>
+              );
+            })
+        }
+      </div>
+    </>
+  );
+
 }
 
 const mapStateToProps = (state: RootState) => ({
