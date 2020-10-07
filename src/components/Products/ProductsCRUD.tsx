@@ -8,6 +8,7 @@ import ProductForm, { ProductCreator } from './ProductForm';
 import { connect, useDispatch } from 'react-redux';
 import * as ProductsAction from '../../redux/Products/Products.actions';
 import { RootState, ThunkDispatch } from '../../redux';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 
 const headers: TableHeader[] = [
   // { key: 'id', value: '#' },
@@ -23,15 +24,27 @@ declare interface ProductsCRUDProps {
 const ProductsCRUD: React.FC<ProductsCRUDProps> = (props) => {
   const dispatch: ThunkDispatch = useDispatch();
 
+  const params = useParams<{id?: string}>();
+  const history = useHistory();
+  const location = useLocation();
+
   const showErrorAlert = (err: Error) => Swal.fire('Ooops! ', err.message, 'error');
 
   const [updatingProduct, setUpdatingProduct] = useState<Product | undefined>();
 
   useEffect(() => {
+    setUpdatingProduct(
+      params.id
+        ? props.products.find(product => product._id === params.id)
+        : undefined
+    );
+  }, [params, props.products]);
+
+  useEffect(() => {
     dispatch(ProductsAction.getProducts())
       .catch(showErrorAlert);
 
-      //eslint-disable-next-line
+    //eslint-disable-next-line
   }, []);
 
   const handleProductSubmit = async (product: ProductCreator) => {
@@ -42,7 +55,13 @@ const ProductsCRUD: React.FC<ProductsCRUDProps> = (props) => {
 
   const handleProductUpdate = async (newProduct: Product) => {
     await dispatch(ProductsAction.updateProduct(newProduct))
-      .then(() => setUpdatingProduct(undefined))
+      .then(() => {
+        setUpdatingProduct(undefined);
+        history.push({
+          pathname: '/products',
+          search: location.search
+        });
+      })
       .catch(showErrorAlert);
   }
 
@@ -78,6 +97,13 @@ const ProductsCRUD: React.FC<ProductsCRUDProps> = (props) => {
       .then(({ value }) => value && deleteProduct(product._id));
   }
 
+  const handleProductEdit = (product: Product) => {
+    history.push({
+      pathname: `/products/${product._id}`,
+      search: location.search
+    });
+  }
+
   return (
     <>
       <Table
@@ -86,7 +112,7 @@ const ProductsCRUD: React.FC<ProductsCRUDProps> = (props) => {
         enableActions
         onDelete={handleProductDelete}
         onDetail={handleProductDetail}
-        onEdit={setUpdatingProduct}
+        onEdit={handleProductEdit}
       />
       <ProductForm
         form={updatingProduct}
