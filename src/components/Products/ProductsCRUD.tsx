@@ -10,6 +10,8 @@ import * as ProductsAction from '../../redux/Products/Products.actions';
 import { RootState, ThunkDispatch } from '../../redux';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 
+import { getAnnouncements } from '../../services/BitMex.service';
+
 const headers: TableHeader[] = [
   // { key: 'id', value: '#' },
   { key: 'name', value: 'Product' },
@@ -103,6 +105,8 @@ const ProductsCRUD: React.FC<ProductsCRUDProps> = (props) => {
       search: location.search
     });
   }
+
+  getAnnouncements();
 
   return (
     <>
