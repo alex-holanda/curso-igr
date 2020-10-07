@@ -6,8 +6,9 @@ import Button from '../Button';
 import { connect } from 'react-redux';
 import { RootState } from '../../redux';
 import { User } from '../../services/Authentication.service';
-import { profile } from 'console';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
+import { parse } from 'query-string';
+import paginate from '../../utils/paginate';
 
 export interface TableHeader {
   key: string;
@@ -21,6 +22,8 @@ declare interface TableProps {
 
   enableActions?: boolean;
 
+  itemsPerPage?: number;
+
   onDelete?: (item: any) => void;
   onDetail?: (item: any) => void;
   onEdit?: (item: any) => void;
@@ -29,8 +32,12 @@ declare interface TableProps {
 }
 
 const Table: React.FC<TableProps> = (props) => {
+  const location = useLocation();
   const [organizedData, indexedHeaders] = organizeData(props.data, props.headers);
-  const page = 2;
+  const page = parseInt(parse(location.search).page as string || '1');
+  const itemsPerPage = props.itemsPerPage || 5;
+  const paginatedData = paginate(organizedData, itemsPerPage, page);
+  const totalPages = Math.ceil(organizedData.length / itemsPerPage);
 
   const isLoggedIn = !!props.profile?._id;
 
@@ -59,7 +66,7 @@ const Table: React.FC<TableProps> = (props) => {
 
         <tbody>
           {
-            organizedData.map((row, i) => {
+            paginatedData.map((row, i) => {
               return <tr key={i}>
                 {
                   Object
@@ -116,11 +123,12 @@ const Table: React.FC<TableProps> = (props) => {
       </table>
       <div className="Table__pagination">
         {
-          Array(10)
+          Array(totalPages)
             .fill('')
             .map((_, i) => {
               return (
                 <NavLink 
+                  key={i}
                   activeClassName="selected"
                   to={`/products?page=${i + 1}`}
                   isActive={() => page === i + 1}
